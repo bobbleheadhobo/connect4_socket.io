@@ -1,0 +1,146 @@
+/* website wide font change */
+* {
+    font-family: Helvetica, sans-serif;
+  }
+
+
+  /* change background color to tan */
+  body{
+    /* background-color: rgb(181, 181, 162); */
+    background-color: #D2B48C;
+  }
+
+
+/* basic setupt for board */
+#board {
+    width: 770px;
+    height: 610px;
+    display: grid;
+    grid-template: repeat(6, 110px) / repeat(7, 110px);
+    justify-content: center;
+    margin: auto;
+
+    background-color: rgb(0, 106, 255);
+    border-radius: 10px;
+
+}
+
+.cell {
+    width: 81px;
+    height: 81px;
+
+    /* margin to align in center of board */
+    margin-top: 13px;
+    margin-left: 10px;
+
+    background-color: white;
+    border-radius: 100%;
+    border: 3px solid black;
+
+    cursor: pointer;
+}
+
+
+.win{
+    font-size: 50px;
+    text-align: center;
+}
+
+/* color for the cells */
+.red{
+    background-color: red;
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+/* make button look nice */
+.restart {
+  position: flex;
+  float:right;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 23px;
+  background-color: transparent;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  color: #3B3B3B;
+  cursor: pointer;
+  display:block;
+  padding: 16px 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 90px;
+}
+
+.restart:hover {
+  color: white;
+  background-color: #1A1A1A;
+}
+
+/* same as restart button but this one is on the left side */
+.home {
+  position: flex;
+  float:left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 25px;
+  background-color: transparent;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  color: #3B3B3B;
+  cursor: pointer;
+  display:block;
+  padding: 16px 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 90px;
+}
+
+.home:hover {
+  color: white;
+  background-color: #1A1A1A;
+}
+
+
+/* flashes winning red cells */
+.red.highlight {
+  animation-name: flashRed;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+/* cells with red and highlight class flash */
+@keyframes flashRed {
+
+  50% {
+    background-color: rgb(255, 231, 231);
+  }
+
+}
+
+
+/* flashes winnning yellow cells */
+.yellow.highlight {
+  animation-name: flashYellow;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+/* cells with yellow and highlight class flash */
+@keyframes flashYellow {
+
+  50% {
+    background-color: rgb(255, 255, 236);
+  }
+  
+}
+ 
+
+
+
+
+
+
+
