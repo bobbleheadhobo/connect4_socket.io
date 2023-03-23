@@ -38,7 +38,7 @@ class logic {
 
 
     nextPlayer(){
-        //reverses current player because the opposite player won
+        //alternates current player
         this.currentPlayer === "red" ? this.currentPlayer = "yellow" : this.currentPlayer = "red";
     }
 
@@ -179,7 +179,7 @@ checkdraw(){
 
 
 
-
+//clears the arrays for tracking a win
 reset() {
     console.log("RESET GAME logic");
 
@@ -202,5 +202,5 @@ reset() {
 
 
 
-  module.exports = logic
+module.exports = logic
   

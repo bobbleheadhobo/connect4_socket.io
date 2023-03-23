@@ -24,7 +24,14 @@ io.on("connection", (socket) => {
   players.push(socket.id);
   console.log(players);
 
+  //update board for new users
   io.emit("updateBoard", gameLogic.board); 
+
+
+  if(players.length > 2){
+    io.to(players.slice(2, players.length)).emit("spectate");
+    console.log("spectators:   " + players.slice(2, players.length));
+  }
 
 
   //removes player from array if they disconnect
@@ -34,16 +41,31 @@ io.on("connection", (socket) => {
       players.splice(index, 1);
       console.log("Player " + socket.id + " has disconnected.");
     }
+
+    //remove spectator message if someone disconnects
+    if(players.length > 2){
+      io.to(players.slice(2, players.length)).emit("spectate");
+      console.log("spectators:   " + players.slice(2, players.length));
+    }
   });
 
+    //tell the player its their turn at the start
     io.to(players[current]).emit("yourTurn");
   
     //recives setPiece request
     socket.on("setPiece", (locate) =>{
       if(socket.id === players[current]) {
 
-        //send message that its their turn
-        io.emit("notYourTurn");
+        //set specator
+        if(players.length > 2){
+          io.to(players.slice(2, players.length)).emit("spectate");
+          console.log("spectators:   " + players.slice(2, players.length));
+        }
+
+        //send message that its not their turn now
+        io.to(players[current]).emit("notYourTurn");
+        
+        //adds cell to 2d array board
         gameLogic.setPiece(locate);
         //update cells on the board
         io.emit("updateBoard", gameLogic.board); 
@@ -64,15 +86,17 @@ io.on("connection", (socket) => {
         //changes the player color
         gameLogic.nextPlayer();
 
-        //alternates between 1 and 0
+        //alternates between 1 and 0 to changes players turn
         current = (current + 1) % 2;
+
+        //tells the next player its their turn
         io.to(players[current]).emit("yourTurn");
 
-    }//end if
+    }//end if to only let one player move per turn
     });
 
 
-
+//resets the board for everyone
 socket.on("reset", () => {
   console.log("reset game server");
   gameLogic.reset();

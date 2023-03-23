@@ -1,5 +1,3 @@
-
-// 'use strict'
 let socket;
 var win = false;
 var rows = 6;
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //function to write all the html elements of the board
 function setBoard() {
     //creates the array for tracking colum size
-    columSize = [0, 0, 0, 0, 0, 0, 0];
+    // columSize = [0, 0, 0, 0, 0, 0, 0];
 
 
     for (let i = 0; i < columns; i++) {
@@ -133,7 +131,7 @@ socket.on("draw", () => {
 
 function reset() {
 
-    columSize = [0, 0, 0, 0, 0, 0, 0];
+    // columSize = [0, 0, 0, 0, 0, 0, 0];
 
     socket.emit("reset");
     
@@ -174,11 +172,24 @@ socket.on("yourTurn", () => {
 
 
   socket.on("notYourTurn", () => {
+
+    console.log("not my turn");
     if(win)
         return;
         
     // Display the message on the page
     let winElement = document.querySelector('.win');
     winElement.innerHTML = "Connect4";
+    winElement.style.color = "black";
+  });
+
+
+
+  socket.on("spectate", () => {
+    console.log("we have a spectator")
+        
+    // Display the message on the page
+    let winElement = document.querySelector('.win');
+    winElement.innerHTML = "Spectating";
     winElement.style.color = "black";
   });
