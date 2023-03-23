@@ -1,3 +1,8 @@
+// Joey Troyer
+// 03/22/23
+// server to handle requests for processing logic and send requests to update the frontend
+
+
 const express = require('express');
 const socket = require('socket.io');
 const app = express();
@@ -22,12 +27,14 @@ var current = 0;
 io.on("connection", (socket) => {
   //fills player array with ids
   players.push(socket.id);
+  console.log();
+  console.log(players.length + " players connected:");
   console.log(players);
 
   //update board for new users
   io.emit("updateBoard", gameLogic.board); 
 
-
+  //show spectating message
   if(players.length > 2){
     io.to(players.slice(2, players.length)).emit("spectate");
     console.log("spectators:   " + players.slice(2, players.length));
@@ -47,14 +54,26 @@ io.on("connection", (socket) => {
       io.to(players.slice(2, players.length)).emit("spectate");
       console.log("spectators:   " + players.slice(2, players.length));
     }
+
+    //show message if waiting for more players
+    if(players.length < 2)
+    io.emit("waiting");
+    
   });
 
+    //show message if waiting for more players
+    if(players.length < 2)
+    io.emit("waiting");
+
     //tell the player its their turn at the start
+    else
     io.to(players[current]).emit("yourTurn");
+
+
   
     //recives setPiece request
     socket.on("setPiece", (locate) =>{
-      if(socket.id === players[current]) {
+      if(socket.id === players[current] && players.length > 1) {
 
         //set specator
         if(players.length > 2){
@@ -101,6 +120,14 @@ socket.on("reset", () => {
   console.log("reset game server");
   gameLogic.reset();
   io.emit("reset");
+
+  //tells the next player its their turn
+  io.to(players[current]).emit("yourTurn");
+
+  //set specator
+  if(players.length > 2){
+    io.to(players.slice(2, players.length)).emit("spectate");
+  }
 })
 
 

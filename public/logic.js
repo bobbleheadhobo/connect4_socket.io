@@ -1,3 +1,7 @@
+// Joey Troyer
+// 03/22/23
+// class to handle all the backend logic
+
 class logic {
     constructor() {
       this.board = [];

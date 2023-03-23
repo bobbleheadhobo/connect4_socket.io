@@ -1,3 +1,7 @@
+// Joey Troyer
+// 03/22/23
+// handles all the front end display elements
+
 let socket;
 var win = false;
 var rows = 6;
@@ -18,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //function to write all the html elements of the board
 function setBoard() {
-    //creates the array for tracking colum size
-    // columSize = [0, 0, 0, 0, 0, 0, 0];
 
 
     for (let i = 0; i < columns; i++) {
@@ -131,31 +133,30 @@ socket.on("draw", () => {
 
 function reset() {
 
-    // columSize = [0, 0, 0, 0, 0, 0, 0];
-
     socket.emit("reset");
     
-    win = false;
-
-     //change text and color in win div
-     let winElement = document.querySelector('.win');
-     winElement.innerHTML = "CONNECT 4";
-     winElement.style.color = "black";
-
 }//end reset
 
 
 socket.on("reset", () => {
+     win = false;
+
     //gets all cells and puts them in array cell
     let cell = document.querySelectorAll('.cell');
 
-    //reset all cells colors
+    //reset all cells colorswin
     for (let i = 0; i < cell.length; i++) {
         // console.log(cell[i]);
         cell[i].classList.remove("red");
         cell[i].classList.remove("yellow");
         cell[i].classList.remove("highlight");
     }
+
+
+     //change text and color in win div
+     let winElement = document.querySelector('.win');
+     winElement.innerHTML = "CONNECT 4";
+     winElement.style.color = "black";
 })
 
 
@@ -191,5 +192,14 @@ socket.on("yourTurn", () => {
     // Display the message on the page
     let winElement = document.querySelector('.win');
     winElement.innerHTML = "Spectating";
+    winElement.style.color = "black";
+  });
+
+
+  socket.on("waiting", () => {       
+    console.log("waiting for more players") 
+    // Display the message on the page
+    let winElement = document.querySelector('.win');
+    winElement.innerHTML = "Waiting for another player to connect";
     winElement.style.color = "black";
   });
